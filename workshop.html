@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex</title>
+  </head>
+  <body>
+    <h1>Pokédex</h1>
+    <form action="#" method="post" alt="form">
+      <input id="name" name="nae" placeholder="pokémon name" type="text">
+      <input id="submit" type="submit" value="Search">
+    </form>
+    <h2 id="pokemonName"></h2>
+    <img id="pokemonImg">
+    <script>
+        function toTitleCase(str) {
+            return str.replace(
+                /\w\S*/g,
+                text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+            );
+            }
+      const pokeSearch = document.querySelector("form");
+      pokeSearch.addEventListener("submit", event => {
+        event.preventDefault();
+        fetch(`https://pokeapi.co/api/v2/pokemon/${document.querySelector("#name").value}`)
+        .then(response => {
+          if (response.ok) {
+            console.log('response is ok');
+          } else {
+            throw new Error('api response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .then(data => {
+            document.querySelector("#pokemonName").innerHTML = toTitleCase(data.name);
+            return data;
+      })
+        .then(data => {
+            document.querySelector("#pokemonImg").src = data.sprites.front_default;
+            return data;
+        })
+        .catch(error => console.log(error));
+      })
+    </script>
+  </body>
+</html>
