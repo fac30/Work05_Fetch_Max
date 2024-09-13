@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real world fetch</title>
+  </head>
+  <body>
+    <form action="#" method="post" alt="form">
+      <input id="username" name="email" placeholder="username" type="text">
+      <input id="password" name="password" placeholder="password" type="password">
+      <input id="submit" type="submit" value="Submit">
+    </form>
+    <script>
+      // Challenge 1
+      fetch("https://echo.oliverjam.workers.dev/status/404")
+      .then(content => console.log("content found"))
+      .catch(error => console.log("its an error"));
+      /*fetch("https://echo.oliverjam.workers.dev/status/404")
+      .then(response => responso.json())
+      .then(data => console.log("then ran"))
+      .catch(error => console.log("error was caught"));*/
+
+      // Challenge 2
+      fetch("https://echo.oliverjam.workers.dev/status/404")
+      .then(response => {
+        if (response.ok) {
+          console.log('response is ok');
+        } else {
+          throw new Error('api response was not ok');
+        }
+      })
+      .catch(error => console.log(error));
+
+      // Challenge 3
+      const data = {
+        favouritePokemon: "bulbasaur",
+        favouriteColour: "yellow"
+      };
+      fetch("https://echo.oliverjam.workers.dev/json", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(data),
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('response is ok');
+        } else {
+          throw new Error('api response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+
+      // Challenge 4
+      const myForm = document.querySelector("form");
+      /*myForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const credentials = {
+          username: document.querySelector("#username").value,
+          password: document.querySelector("#password").value
+        }
+        fetch("https://echo.oliverjam.workers.dev/json", {
+          method: "POST",
+          headers: {"content-type": "application/json"},
+          body: JSON.stringify(credentials),
+        })
+        .then(response => {
+          if (response.ok) {
+            console.log('response is ok');
+          } else {
+            throw new Error('api response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
+      })*/
+
+      // Challenge 5
+      myForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const credentials = Object.fromEntries(new FormData(myForm));
+        fetch("https://reqres.in/api/users", {
+          method: "POST",
+          headers: {"content-type": "application/json"},
+          body: JSON.stringify(credentials),
+        })
+        .then(response => {
+          if (response.ok) {
+            console.log('response is ok');
+          } else {
+            throw new Error('api response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
+      })
+    </script>
+  </body>
+</html>
